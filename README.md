@@ -74,3 +74,13 @@ and design decisions, see the [architecture documentation][architecture].
 [firelink-backend]: https://github.com/RedHatInsights/firelink-backend
 [firelink-frontend]: https://github.com/RedHatInsights/firelink-frontend
 [architecture]: ./ARCHITECTURE.md
+=======
+$ oc create secret generic firelink-proxy \
+    --from-literal=clientSecret=$(openssl rand -hex 32) -n $NS
+$ oc process -f deploy/deploy.yaml | oc apply -n $NS -f -
+```
+
+The `clientSecret` is used by oauth-proxy as the cookie-signing key, so it
+**must** be unique per environment and never committed to source control.
+When you deploy IRL you'll need the secret named `firelink-proxy` created
+elsewhere as it isn't in the template.
